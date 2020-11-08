@@ -10,7 +10,6 @@
 export default {
 	name: 'TabBar',
 	components: {
-		// TabBarItem
 	}
 }
 </script>

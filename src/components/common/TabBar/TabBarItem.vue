@@ -33,7 +33,6 @@ export default {
     itemClick(){
       if(this.$route.matched[0].path != this.path)
         this.$router.push(this.path)
-      console.log(this.$route);
     }
   }
 };
