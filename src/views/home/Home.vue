@@ -1,12 +1,15 @@
 <template>
   <div id='home'>
     <navi-bar class='home-navi'><div slot='mid'>购物街</div></navi-bar>
-    <h2>Home</h2>
+    <home-swiper :banners="banners"></home-swiper>
   </div>
 </template>
 
 <script>
 import NaviBar from "components/common/navibar/NaviBar";
+import HomeSwiper from "./ChildComp/HomeSwiper"
+
+
 import {getHomeMultidata} from "network/home.js"
 
 export default {
@@ -15,6 +18,7 @@ export default {
 
   components: {
     NaviBar,
+    HomeSwiper
   },
 
 
