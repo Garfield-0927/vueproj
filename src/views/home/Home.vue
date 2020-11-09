@@ -7,11 +7,32 @@
 
 <script>
 import NaviBar from "components/common/navibar/NaviBar";
+import {getHomeMultidata} from "network/home.js"
+
 export default {
   name: "Home",
+
+
   components: {
     NaviBar,
   },
+
+
+  data(){
+    return {
+      banners: [],
+      recommends: []
+    }
+  },
+
+
+  created(){
+    let that = this;
+    getHomeMultidata().then( res => {
+      that.banners = res.data.banner.list;
+      that.recommends = res.data.recommend.list
+    })
+  }
 };
 </script>
 
