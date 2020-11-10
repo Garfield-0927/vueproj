@@ -41,6 +41,7 @@ export default {
   width: 100%;
   height: 50px;
   justify-content: center;
+  background-color: #fff;
 }
 
 .tab-item{
