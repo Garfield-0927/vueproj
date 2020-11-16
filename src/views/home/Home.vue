@@ -4,6 +4,7 @@
     <home-swiper :banners="banners"></home-swiper>
     <recommends :recommends="recommends"></recommends>
     <tab-control class="tab-control" :titles="titles"></tab-control>
+    <goods :goods="goods['pop'].list"></goods>
     <ul>
       <li>test</li>
       <li>test</li>
@@ -54,6 +55,7 @@ import NaviBar from "components/common/navibar/NaviBar";
 import HomeSwiper from "./ChildComp/HomeSwiper";
 import Recommends from "./ChildComp/Recommends";
 import TabControl from "components/content/tabControl/TabControl";
+import Goods from "components/content/goods/Goods"
 
 import { getHomeMultidata, getHomeGoods } from "network/home.js";
 
@@ -65,6 +67,7 @@ export default {
     HomeSwiper,
     Recommends,
     TabControl,
+    Goods,
   },
 
   data() {
@@ -100,13 +103,18 @@ export default {
     },
 
     getHomeGoods(type) {
-      let page = this.goods[type].page ;
+      let page = this.goods[type].page + 1;
       getHomeGoods(type, page).then( res => {
-        console.log(res);
+        // console.log(res);
+        this.goods[type].list.push(...res.data.list);
+        this.goods[type].page+=1;
       }, err => {
         console.log(err);
       })
     },
+
+
+
   },
 
 
