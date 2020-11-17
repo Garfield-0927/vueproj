@@ -1,11 +1,14 @@
 <template>
   <div class="itemwrapper">
-    <img class="itemImage" :src="goodsItem.show.img" alt="" />
-    <div>
+    <div class="imgwrapper">
+      <img class="itemImage" :src="goodsItem.show.img" alt="" />
+    </div>
+
+    <div class="detailwrapper">
       <p class="title">{{ goodsItem.title }}</p>
       <div class="priceAndfav">
         <span class="price">$ {{ goodsItem.price }}</span>
-        <span class="favorites">{{ goodsItem.cfav }}</span>
+        <span class="favorites">收藏 {{ goodsItem.cfav }}</span>
       </div>
     </div>
   </div>
@@ -36,11 +39,19 @@ export default {
   margin-top: 10px;
 }
 
+.imgwrapper{
+  text-align: center;
+}
+
 .itemImage {
-  width: 100%;
+  width: 92%;
+  border-radius: 10px;
+
 }
 
 .title {
+  margin: 5px auto;
+  width: 92%;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -55,10 +66,12 @@ export default {
 .price{
   text-align: center;
   flex: 1;
+  color: rgb(18, 150, 219);
 }
 
 .favorites{
   text-align: center;
   flex: 1;
+  color: rgb(18, 150, 219);
 }
 </style>

@@ -3,8 +3,8 @@
     <navi-bar class="home-navi"><div slot="mid">购物街</div></navi-bar>
     <home-swiper :banners="banners"></home-swiper>
     <recommends :recommends="recommends"></recommends>
-    <tab-control class="tab-control" :titles="titles"></tab-control>
-    <goods :goods="goods['pop'].list"></goods>
+    <tab-control class="tab-control" :titles="titles" @tabClick='tabclick'></tab-control>
+    <goods :goods="goods[currentType].list"></goods>
     <ul>
       <li>test</li>
       <li>test</li>
@@ -80,6 +80,7 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] },
       },
+      currentType: 'sell',
     };
   },
 
@@ -95,6 +96,28 @@ export default {
 
 
   methods: {
+    tabclick(index){
+      // console.log(index);
+      switch (index){
+        case 0:
+          this.currentType = 'sell';
+          break;
+        case 1:
+          this.currentType = 'new';
+          break;
+        case 2:
+          this.currentType = 'pop';
+          break;
+        default:
+          break;
+      }
+    },
+
+
+
+
+
+
     getHomeMultidata() {
       getHomeMultidata().then((res) => {
         this.banners = res.data.banner.list;

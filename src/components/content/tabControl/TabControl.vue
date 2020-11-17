@@ -29,6 +29,7 @@ export default {
     changeTab(e){
     //  console.log(e);
       this.currentIndex = e;
+      this.$emit('tabClick', e)
     }
   },
 }
