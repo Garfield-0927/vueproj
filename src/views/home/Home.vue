@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <navi-bar class="home-navi"><div slot="mid">购物街</div></navi-bar>
-    <scroll class="wrapper" ref="scroll">
+    <scroll class="wrapper" ref="scroll" :probe-type="3" @positionchange="positionchange">
       <home-swiper :banners="banners"></home-swiper>
       <recommends :recommends="recommends"></recommends>
       <tab-control
@@ -11,7 +11,7 @@
       ></tab-control>
       <goods :goods="goods[currentType].list"></goods>
     </scroll>
-    <back-top @click.native="backTop"></back-top>
+    <back-top v-show="showBackTop === true" @click.native="backTop"></back-top>
   </div>
 </template>
 
@@ -50,6 +50,7 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "sell",
+      showBackTop: false
     };
   },
 
@@ -104,10 +105,25 @@ export default {
       );
     },
 
-
+    // 回到顶部函数
     backTop(){
       this.$refs.scroll.scroll.scrollTo(0,0,1000);
-    }
+    },
+
+    // 获取滚动位置来显示backtotop悬浮窗
+    positionchange(pos){
+      if(pos.y < -1100)
+      {
+        this.showBackTop = true;
+      }
+      else
+      {
+        this.showBackTop = false
+      }
+}
+
+
+
   },
 };
 </script>
