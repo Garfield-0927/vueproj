@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <navi-bar class="home-navi"><div slot="mid">购物街</div></navi-bar>
-    <scroll class="wrapper">
+    <scroll class="wrapper" ref="scroll">
       <home-swiper :banners="banners"></home-swiper>
       <recommends :recommends="recommends"></recommends>
       <tab-control
@@ -11,6 +11,7 @@
       ></tab-control>
       <goods :goods="goods[currentType].list"></goods>
     </scroll>
+    <back-top @click.native="backTop"></back-top>
   </div>
 </template>
 
@@ -21,6 +22,7 @@ import Recommends from "./ChildComp/Recommends";
 import TabControl from "components/content/tabControl/TabControl";
 import Goods from "components/content/goods/Goods";
 import Scroll from "components/common/scroll/Scroll";
+import BackTop from "components/content/backTop/BackTop"
 
 import { getHomeMultidata, getHomeGoods } from "network/home.js";
 
@@ -34,6 +36,7 @@ export default {
     TabControl,
     Goods,
     Scroll,
+    BackTop
   },
 
   data() {
@@ -100,6 +103,11 @@ export default {
         }
       );
     },
+
+
+    backTop(){
+      this.$refs.scroll.scroll.scrollTo(0,0,1000);
+    }
   },
 };
 </script>
@@ -121,7 +129,6 @@ export default {
 }
 
 .tab-control {
-  position: sticky;
   top: 44px;
 }
 
@@ -131,4 +138,7 @@ export default {
   position: fixed;
   width: 100%;
 }
+
+
+
 </style>
