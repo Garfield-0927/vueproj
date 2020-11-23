@@ -1,7 +1,14 @@
 <template>
   <div id="home">
     <navi-bar class="home-navi"><div slot="mid">购物街</div></navi-bar>
-    <scroll class="wrapper" ref="scroll" :probe-type="3" @positionchange="positionchange">
+    <scroll
+      class="wrapper"
+      ref="scroll"
+      :probe-type="3"
+      :pulling-up="true"
+      @positionchange="positionchange"
+      @pullingUp="LoadMore"
+    >
       <home-swiper :banners="banners"></home-swiper>
       <recommends :recommends="recommends"></recommends>
       <tab-control
@@ -22,7 +29,7 @@ import Recommends from "./ChildComp/Recommends";
 import TabControl from "components/content/tabControl/TabControl";
 import Goods from "components/content/goods/Goods";
 import Scroll from "components/common/scroll/Scroll";
-import BackTop from "components/content/backTop/BackTop"
+import BackTop from "components/content/backTop/BackTop";
 
 import { getHomeMultidata, getHomeGoods } from "network/home.js";
 
@@ -36,7 +43,7 @@ export default {
     TabControl,
     Goods,
     Scroll,
-    BackTop
+    BackTop,
   },
 
   data() {
@@ -50,7 +57,7 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "sell",
-      showBackTop: false
+      showBackTop: false,
     };
   },
 
@@ -59,9 +66,9 @@ export default {
     this.getHomeMultidata();
 
     // 请求商品数据
-    this.getHomeGoods("pop");
-    this.getHomeGoods("sell");
-    this.getHomeGoods("new");
+    this.getHomeGood("pop");
+    this.getHomeGood("sell");
+    this.getHomeGood("new");
   },
 
   mounted() {},
@@ -91,7 +98,7 @@ export default {
       });
     },
 
-    getHomeGoods(type) {
+    getHomeGood(type) {
       let page = this.goods[type].page + 1;
       getHomeGoods(type, page).then(
         (res) => {
@@ -106,23 +113,26 @@ export default {
     },
 
     // 回到顶部函数
-    backTop(){
-      this.$refs.scroll.scroll.scrollTo(0,0,1000);
+    backTop() {
+      this.$refs.scroll.scroll.scrollTo(0, 0, 1000);
     },
 
     // 获取滚动位置来显示backtotop悬浮窗
-    positionchange(pos){
-      if(pos.y < -1100)
-      {
+    positionchange(pos) {
+      if (pos.y < -1100) {
         this.showBackTop = true;
+      } else {
+        this.showBackTop = false;
       }
-      else
-      {
-        this.showBackTop = false
-      }
-}
+    },
 
+    // 上拉加载更多
+    LoadMore(){
+      this.getHomeGood(this.currentType);
+      this.$refs.scroll.scroll.finishPullUp();
+    },
 
+    //
 
   },
 };
@@ -154,7 +164,4 @@ export default {
   position: fixed;
   width: 100%;
 }
-
-
-
 </style>
