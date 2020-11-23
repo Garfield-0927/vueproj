@@ -1,7 +1,7 @@
 <template>
   <div class="itemwrapper">
     <div class="imgwrapper">
-      <img class="itemImage" :src="goodsItem.show.img" alt="" />
+      <img class="itemImage" :src="goodsItem.show.img" @load="imgLoad"/>
     </div>
 
     <div class="detailwrapper">
@@ -26,6 +26,12 @@ export default {
         return {};
       },
     },
+  },
+
+  methods: {
+    imgLoad(){
+      this.$bus.$emit('itemImgLoad');
+    }
   },
 };
 </script>

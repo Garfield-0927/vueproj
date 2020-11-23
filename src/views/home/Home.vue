@@ -69,11 +69,18 @@ export default {
     this.getHomeGood("pop");
     this.getHomeGood("sell");
     this.getHomeGood("new");
+
+
+    // 监听组件中图片假造完成
+    this.$bus.$on('itemImgLoad', ()=>{
+      this.$refs.scroll.scroll.refresh();
+    })
   },
 
   mounted() {},
 
   methods: {
+    // 监听tab bar 点击
     tabclick(index) {
       // console.log(index);
       switch (index) {
@@ -91,6 +98,31 @@ export default {
       }
     },
 
+    // 获取滚动位置来显示backtotop悬浮窗
+    positionchange(pos) {
+      if (pos.y < -1100) {
+        this.showBackTop = true;
+      } else {
+        this.showBackTop = false;
+      }
+    },
+
+    // 上拉加载更多
+    LoadMore(){
+      this.getHomeGood(this.currentType);
+      this.$refs.scroll.scroll.finishPullUp();
+    },
+
+    // 回到顶部函数
+    backTop() {
+      this.$refs.scroll.scroll.scrollTo(0, 0, 1000);
+    },
+
+
+
+    /*
+    请求数据的函数
+    */
     getHomeMultidata() {
       getHomeMultidata().then((res) => {
         this.banners = res.data.banner.list;
@@ -112,25 +144,8 @@ export default {
       );
     },
 
-    // 回到顶部函数
-    backTop() {
-      this.$refs.scroll.scroll.scrollTo(0, 0, 1000);
-    },
 
-    // 获取滚动位置来显示backtotop悬浮窗
-    positionchange(pos) {
-      if (pos.y < -1100) {
-        this.showBackTop = true;
-      } else {
-        this.showBackTop = false;
-      }
-    },
 
-    // 上拉加载更多
-    LoadMore(){
-      this.getHomeGood(this.currentType);
-      this.$refs.scroll.scroll.finishPullUp();
-    },
 
     //
 
