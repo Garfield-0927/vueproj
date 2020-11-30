@@ -69,17 +69,30 @@ export default {
     this.getHomeGood("pop");
     this.getHomeGood("sell");
     this.getHomeGood("new");
-
-
-    // 监听组件中图片假造完成
-    this.$bus.$on('itemImgLoad', ()=>{
-      this.$refs.scroll.scroll.refresh();
-    })
   },
 
-  mounted() {},
+  mounted() {
+    // 监听组件中图片加载完成
+    const refresh = this.debounce(this.$refs.scroll.scroll.refresh, 500);
+    this.$bus.$on("itemImgLoad", () => {
+      refresh();
+    });
+  },
 
   methods: {
+    // 防抖
+    debounce(func, delay){
+      let timer = null;
+      return function(...args){
+        if(timer)
+          clearTimeout(timer);
+        timer = setTimeout(() => {
+          func.apply(this, args)
+        }, delay)
+      }
+    },
+
+
     // 监听tab bar 点击
     tabclick(index) {
       // console.log(index);
@@ -108,7 +121,7 @@ export default {
     },
 
     // 上拉加载更多
-    LoadMore(){
+    LoadMore() {
       this.getHomeGood(this.currentType);
       this.$refs.scroll.scroll.finishPullUp();
     },
@@ -117,8 +130,6 @@ export default {
     backTop() {
       this.$refs.scroll.scroll.scrollTo(0, 0, 1000);
     },
-
-
 
     /*
     请求数据的函数
@@ -144,11 +155,7 @@ export default {
       );
     },
 
-
-
-
     //
-
   },
 };
 </script>
