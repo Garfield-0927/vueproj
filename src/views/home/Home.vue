@@ -5,7 +5,7 @@
       class="tab-control-copy"
       :titles="titles"
       @tabClick="tabclick"
-      ref="tabControl"
+      ref="tabControl2"
       v-show="TabFixed"
     ></tab-control>
     <scroll
@@ -112,6 +112,7 @@ export default {
         default:
           break;
       }
+      this.$refs.tabControl2.currentIndex = index;
     },
 
     // 获取滚动位置来显示backtotop悬浮窗 获取tabcontrol的位置，判断是否吸顶
