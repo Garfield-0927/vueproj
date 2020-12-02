@@ -1,6 +1,13 @@
 <template>
   <div id="home">
     <navi-bar class="home-navi"><div slot="mid">购物街</div></navi-bar>
+    <tab-control
+      class="tab-control-copy"
+      :titles="titles"
+      @tabClick="tabclick"
+      ref="tabControl"
+      v-show="TabFixed"
+    ></tab-control>
     <scroll
       class="wrapper"
       ref="scroll"
@@ -62,6 +69,8 @@ export default {
       currentType: "sell",
       showBackTop: false,
       tabBarOffSetTop: 0,
+      TabFixed: false,
+
     };
   },
 
@@ -82,7 +91,6 @@ export default {
       refresh();
     });
 
-    // 监听轮播图是否已经加载完成
 
   },
 
@@ -106,13 +114,15 @@ export default {
       }
     },
 
-    // 获取滚动位置来显示backtotop悬浮窗
+    // 获取滚动位置来显示backtotop悬浮窗 获取tabcontrol的位置，判断是否吸顶
     positionchange(pos) {
       if (pos.y < -1100) {
         this.showBackTop = true;
       } else {
         this.showBackTop = false;
       }
+
+      this.TabFixed = pos.y < -this.tabBarOffSetTop;
     },
 
     // 上拉加载更多
@@ -129,8 +139,11 @@ export default {
     // 轮播图加载完成
     swiperLoadDone(){
       // console.log(this.$refs.tabControl.$el.offsetTop);
+      // let aaa = this.$refs.tabControl.$el;
+
       // 拿到tabbar的offsetTop  注意：不能再mounted中获取，因为那时候 图片还未请求过来，高度不确定
       this.tabBarOffSetTop = this.$refs.tabControl.$el.offsetTop;
+      console.log(this.tabBarOffSetTop)
     },
 
 
@@ -164,22 +177,18 @@ export default {
 
 <style scoped>
 #home {
-  padding-top: 44px;
+  /*padding-top: 44px;*/
   height: 100vh;
 }
 
 .home-navi {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
+  /*position: fixed;*/
+  /*left: 0;*/
+  /*right: 0;*/
+  /*top: 0;*/
   background-color: rgb(18, 150, 219);
   color: #ffffff;
-  z-index: 9;
-}
-
-.tab-control {
-  top: 44px;
+  /*z-index: 9;*/
 }
 
 .wrapper {
@@ -188,4 +197,10 @@ export default {
   position: fixed;
   width: 100%;
 }
+
+.tab-control-copy{
+  position: fixed;
+  z-index: 9;
+}
+
 </style>
