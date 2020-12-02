@@ -9,12 +9,13 @@
       @positionchange="positionchange"
       @pullingUp="LoadMore"
     >
-      <home-swiper :banners="banners"></home-swiper>
+      <home-swiper :banners="banners" @imgload="swiperLoadDone"></home-swiper>
       <recommends :recommends="recommends"></recommends>
       <tab-control
         class="tab-control"
         :titles="titles"
         @tabClick="tabclick"
+        ref="tabControl"
       ></tab-control>
       <goods :goods="goods[currentType].list"></goods>
     </scroll>
@@ -32,6 +33,8 @@ import Scroll from "components/common/scroll/Scroll";
 import BackTop from "components/content/backTop/BackTop";
 
 import { getHomeMultidata, getHomeGoods } from "network/home.js";
+import { debounce } from "common/utils";
+
 
 export default {
   name: "Home",
@@ -58,6 +61,7 @@ export default {
       },
       currentType: "sell",
       showBackTop: false,
+      tabBarOffSetTop: 0,
     };
   },
 
@@ -72,26 +76,17 @@ export default {
   },
 
   mounted() {
-    // 监听组件中图片加载完成
-    const refresh = this.debounce(this.$refs.scroll.scroll.refresh, 500);
+    // 监听组件中图片加载完成 防抖
+    const refresh = debounce(this.$refs.scroll.refresh, 500);
     this.$bus.$on("itemImgLoad", () => {
       refresh();
     });
+
+    // 监听轮播图是否已经加载完成
+
   },
 
   methods: {
-    // 防抖
-    debounce(func, delay){
-      let timer = null;
-      return function(...args){
-        if(timer)
-          clearTimeout(timer);
-        timer = setTimeout(() => {
-          func.apply(this, args)
-        }, delay)
-      }
-    },
-
 
     // 监听tab bar 点击
     tabclick(index) {
@@ -123,13 +118,21 @@ export default {
     // 上拉加载更多
     LoadMore() {
       this.getHomeGood(this.currentType);
-      this.$refs.scroll.scroll.finishPullUp();
+      this.$refs.scroll.finishPullUp();
     },
 
     // 回到顶部函数
     backTop() {
       this.$refs.scroll.scroll.scrollTo(0, 0, 1000);
     },
+
+    // 轮播图加载完成
+    swiperLoadDone(){
+      // console.log(this.$refs.tabControl.$el.offsetTop);
+      // 拿到tabbar的offsetTop  注意：不能再mounted中获取，因为那时候 图片还未请求过来，高度不确定
+      this.tabBarOffSetTop = this.$refs.tabControl.$el.offsetTop;
+    },
+
 
     /*
     请求数据的函数
@@ -140,7 +143,6 @@ export default {
         this.recommends = res.data.recommend.list;
       });
     },
-
     getHomeGood(type) {
       let page = this.goods[type].page + 1;
       getHomeGoods(type, page).then(
@@ -155,7 +157,7 @@ export default {
       );
     },
 
-    //
+
   },
 };
 </script>
