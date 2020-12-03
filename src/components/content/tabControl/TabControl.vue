@@ -20,7 +20,8 @@ export default {
 
   data() {
     return {
-      currentIndex: 0
+      currentIndex: 0,
+      lastIndex: 0
     }
   },
 
@@ -28,8 +29,9 @@ export default {
   methods: {
     changeTab(e){
     //  console.log(e);
+      this.lastIndex = this.currentIndex;
       this.currentIndex = e;
-      this.$emit('tabClick', e)
+      this.$emit('tabClick', e, this.lastIndex)
     }
   },
 }

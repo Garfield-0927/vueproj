@@ -70,7 +70,8 @@ export default {
       showBackTop: false,
       tabBarOffSetTop: 0,
       TabFixed: false,
-      scrollY: 0,
+      scrollY: [0, 0, 0],
+      lastIndex: 0,
 
     };
   },
@@ -96,17 +97,19 @@ export default {
   },
 
   activated() {
-    this.$refs.scroll.scroll.scrollTo(0, this.scrollY, 0);
+    this.$refs.scroll.scroll.scrollTo(0, this.scrollY[this.$refs.tabControl.currentIndex], 0);
     this.$refs.scroll.scroll.refresh();
   },
   deactivated() {
-    this.scrollY = this.$refs.scroll.scroll.y;
+    this.scrollY[this.$refs.tabControl.currentIndex] = this.$refs.scroll.scroll.y;
+    // console.log(this.$refs.tabControl.currentIndex)
+    // console.log(this.scrollY);
     // console.log(this.scrollY);
   },
   methods: {
 
     // 监听tab bar 点击
-    tabclick(index) {
+    tabclick(index, lastIndex) {
       // console.log(index);
       switch (index) {
         case 0:
@@ -123,6 +126,24 @@ export default {
       }
       this.$refs.tabControl2.currentIndex = index;
       this.$refs.tabControl.currentIndex = index;
+
+
+      /*
+      *   让tabbar切换的时候保持原来的页面不变
+      */
+      this.lastIndex = lastIndex;
+      this.scrollY[this.lastIndex] = this.$refs.scroll.scroll.y;
+      let currentHeight = 0;
+      if (this.scrollY[this.$refs.tabControl.currentIndex] == 0)
+      {
+        currentHeight = -this.tabBarOffSetTop;
+      }
+      else
+      {
+        currentHeight = this.scrollY[this.$refs.tabControl.currentIndex];
+      }
+      this.$refs.scroll.scroll.scrollTo(0, currentHeight, 0);
+      this.$refs.scroll.scroll.refresh();
     },
 
     // 获取滚动位置来显示backtotop悬浮窗 获取tabcontrol的位置，判断是否吸顶
