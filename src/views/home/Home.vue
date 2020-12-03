@@ -70,6 +70,7 @@ export default {
       showBackTop: false,
       tabBarOffSetTop: 0,
       TabFixed: false,
+      scrollY: 0,
 
     };
   },
@@ -94,6 +95,14 @@ export default {
 
   },
 
+  activated() {
+    this.$refs.scroll.scroll.scrollTo(0, this.scrollY, 0);
+    this.$refs.scroll.scroll.refresh();
+  },
+  deactivated() {
+    this.scrollY = this.$refs.scroll.scroll.y;
+    // console.log(this.scrollY);
+  },
   methods: {
 
     // 监听tab bar 点击
@@ -113,6 +122,7 @@ export default {
           break;
       }
       this.$refs.tabControl2.currentIndex = index;
+      this.$refs.tabControl.currentIndex = index;
     },
 
     // 获取滚动位置来显示backtotop悬浮窗 获取tabcontrol的位置，判断是否吸顶
@@ -144,7 +154,7 @@ export default {
 
       // 拿到tabbar的offsetTop  注意：不能再mounted中获取，因为那时候 图片还未请求过来，高度不确定
       this.tabBarOffSetTop = this.$refs.tabControl.$el.offsetTop;
-      console.log(this.tabBarOffSetTop)
+      // console.log(this.tabBarOffSetTop)
     },
 
 
@@ -173,6 +183,7 @@ export default {
 
 
   },
+
 };
 </script>
 
