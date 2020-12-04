@@ -1,10 +1,18 @@
 <template>
-  <div>{{iid}}</div>
+  <div>
+    <detail-navi-bar></detail-navi-bar>
+  </div>
+
 </template>
 
 <script>
+import DetailNaviBar from "@/views/detail/ChildComp/DetailNaviBar";
+
   export default {
     name: "Detail",
+    components:{
+      DetailNaviBar
+    },
     data(){
       return{
         iid: null
@@ -19,8 +27,9 @@
       this.$destroy('Detail');
     },
 
-    destroyed() {
-      console.log('destroyed');
+
+    methods:{
+
     }
   }
 </script>
