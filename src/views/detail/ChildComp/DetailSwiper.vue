@@ -1,6 +1,6 @@
 <template>
   <div>
-  <swiper>
+  <swiper class="detailSwiper">
     <swiper-item v-for="(item, index) in swiperImg" :key="index">
       <img :src="item" alt="">
     </swiper-item>
@@ -27,16 +27,14 @@ export default {
     }
   },
 
-  mounted() {
-    setTimeout(()=>{
-      console.log(this.swiperImg)
 
-    }, 500)
-  }
 
 }
 </script>
 
 <style scoped>
-
+.detailSwiper{
+  height: 300px;
+  overflow: hidden;
+}
 </style>
