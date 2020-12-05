@@ -35,14 +35,21 @@ export default {
     });
 
     // listen rolling
-    this.scroll.on('scroll', position => {
-      this.$emit('positionchange',position);
-    })
+    if (this.probeType!==0)
+    {
+      this.scroll && this.scroll.on('scroll', position => {
+        this.$emit('positionchange',position);
+      })
 
-    // pulling up
-    this.scroll.on('pullingUp', ()=>{
-      this.$emit('pullingUp');
-    })
+
+    }
+
+    if (this.pullingUp){
+      // pulling up
+      this.scroll && this.scroll.on('pullingUp', ()=>{
+        this.$emit('pullingUp');
+      })
+    }
 
   },
 

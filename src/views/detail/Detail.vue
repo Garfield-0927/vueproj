@@ -79,10 +79,14 @@ export default {
 
     })
 
+
+
+  },
+
+  mounted() {
     this.$bus.$on("DetailSwiperDone",()=>{
       this.$refs.scroll.refresh();
     })
-
   },
 
   deactivated() {
@@ -111,6 +115,5 @@ export default {
 }
 .scrollWrapper{
   height: calc(100% - 44px);
-  z-index: 99;
 }
 </style>
