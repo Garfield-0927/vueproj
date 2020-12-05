@@ -1,13 +1,19 @@
 <template>
   <div>
-    <div class="basicInfo">
-      <div class="title">{{detail.title}}</div>
-      <div class="price">
-        <div class="nowP">{{detail.nowPrice}}</div>
-        <div class="oldP">{{detail.oldPrice}}</div>
+    <div class="basicInfo" v-if="Object.keys(basicInfo).length!==0">
+      <div v-cloak class="title">{{basicInfo.title}}</div>
+      <div v-cloak class="price">
+        <div v-cloak class="nowP">{{basicInfo.nowPrice}}</div>
+        <div v-cloak class="oldP">{{basicInfo.oldPrice}}</div>
       </div>
-      <div class="sellAndfavor">
-        <div class="columnItem" v-for="(item,index) in detail.columns" :key="index">{{item}}</div>
+      <div  class="sellAndfavor">
+        <div v-cloak class="columnItem" v-for="(item,index) in basicInfo.columns" :key="index">{{item}}</div>
+      </div>
+      <div class="postSell">
+        <div class="postSellItem" v-for="(item, index) in basicInfo.service" :key="index">
+          <img :src="item.icon" alt="">
+          <p>{{item.name}}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -16,10 +22,10 @@
 <script>
 
 export default {
-  name: "Price",
+  name: "BasicInfo",
 
   props:{
-    detail:{
+    basicInfo:{
       type: Object,
       default(){
         return {}
@@ -28,7 +34,6 @@ export default {
   },
 
   created() {
-    console.log(this.detail)
   }
 
 }
@@ -88,5 +93,26 @@ export default {
 }
 .columnItem:nth-child(3){
   text-align: right;
+}
+
+.postSell{
+  margin-top: 18px;
+  display: flex;
+  border-bottom: 2px solid lightgrey;
+
+}
+.postSellItem{
+  height: 20px;
+  float: left;
+  margin-right: 14px;
+  padding-bottom: 18px;
+}
+.postSellItem img{
+  height: 13px;
+}
+.postSellItem p{
+  line-height: 20px;
+  display: inline;
+  font-size: 12px;
 }
 </style>

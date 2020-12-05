@@ -6,3 +6,4 @@ export function getDetail(iid){
     params: {iid}
   })
 }
+

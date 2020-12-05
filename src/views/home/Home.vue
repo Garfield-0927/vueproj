@@ -210,18 +210,12 @@ export default {
 
 <style scoped>
 #home {
-  /*padding-top: 44px;*/
   height: 100vh;
 }
 
 .home-navi {
-  /*position: fixed;*/
-  /*left: 0;*/
-  /*right: 0;*/
-  /*top: 0;*/
   background-color: rgb(18, 150, 219);
   color: #ffffff;
-  /*z-index: 9;*/
 }
 
 .wrapper {
