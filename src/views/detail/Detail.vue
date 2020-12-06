@@ -5,7 +5,7 @@
       <detail-swiper :swiper-img="swiperImg"></detail-swiper>
       <basic-info :basic-info="basicInfo"></basic-info>
       <shop-info :shop-info="shopInfo"></shop-info>
-
+      <goods-detail-info :goods-detail-info="goodsDetailInfo"></goods-detail-info>
     </scroll>
 
   </div>
@@ -19,7 +19,10 @@ import DetailSwiper from "@/views/detail/ChildComp/DetailSwiper";
 import BasicInfo from "@/views/detail/ChildComp/BasicInfo";
 import Scroll from "@/components/common/scroll/Scroll";
 import ShopInfo from "@/views/detail/ChildComp/ShopInfo";
+import GoodsDetailInfo from "@/views/detail/ChildComp/GoodsDetailInfo";
+
 import {shopInfo} from "@/views/detail/js/detail";
+import {debounce} from "@/common/utils";
 
 export default {
   name: "Detail",
@@ -29,6 +32,7 @@ export default {
     BasicInfo,
     Scroll,
     ShopInfo,
+    GoodsDetailInfo,
 
   },
 
@@ -44,7 +48,7 @@ export default {
         service: [],
       },
       shopInfo: {},
-
+      goodsDetailInfo:{}
     }
   },
 
@@ -68,8 +72,10 @@ export default {
                                    res.result.shopInfo.shopUrl, res.result.shopInfo.cFans,
                                    res.result.shopInfo.cSells, res.result.shopInfo.score);
 
-    })
+      //get goods detail info
+      this.goodsDetailInfo = res.result.detailInfo;
 
+    })
 
 
   },
@@ -77,6 +83,11 @@ export default {
   mounted() {
     this.$bus.$on("DetailSwiperDone",()=>{
       this.$refs.scroll.refresh();
+    })
+
+    const refresh = this.$refs.scroll.refresh;
+    this.$bus.$on("DetailSwiperDone",()=>{
+      debounce(refresh,500);
     })
   },
 
