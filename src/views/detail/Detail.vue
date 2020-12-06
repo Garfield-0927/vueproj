@@ -37,7 +37,7 @@
 import DetailNaviBar from "@/views/detail/ChildComp/DetailNaviBar";
 import {getDetail} from "network/detail.js"
 import DetailSwiper from "@/views/detail/ChildComp/DetailSwiper";
-import BasicInfo from "@/views/detail/ChildComp/BacisInfo";
+import BasicInfo from "@/views/detail/ChildComp/BasicInfo";
 import Scroll from "@/components/common/scroll/Scroll";
 
 export default {
@@ -111,9 +111,11 @@ export default {
 }
 .NaviBar{
   position: relative;
+  top: 0;
   z-index: 2;
 }
 .scrollWrapper{
   height: calc(100% - 44px);
+
 }
 </style>

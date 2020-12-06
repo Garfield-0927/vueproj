@@ -11,8 +11,8 @@
       </div>
       <div class="postSell">
         <div class="postSellItem" v-for="(item, index) in basicInfo.service" :key="index">
-          <img :src="item.icon" alt="">
-          <p>{{item.name}}</p>
+
+          <span><img :src="item.icon" alt="">{{item.name}}</span>
         </div>
       </div>
     </div>
@@ -96,23 +96,24 @@ export default {
 }
 
 .postSell{
-  margin-top: 18px;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px;
+  padding-bottom: 18px;
   border-bottom: 2px solid lightgrey;
-
 }
 .postSellItem{
   height: 20px;
-  float: left;
-  margin-right: 14px;
-  padding-bottom: 18px;
 }
 .postSellItem img{
   height: 13px;
+  position: relative;
+  top: 2px;
 }
-.postSellItem p{
+.postSellItem span{
   line-height: 20px;
-  display: inline;
-  font-size: 12px;
+  font-size: 13px;
+  height: 20px;
 }
 </style>
