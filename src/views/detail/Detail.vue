@@ -1,11 +1,18 @@
 <template>
   <div class="detail">
-    <detail-navi-bar class="NaviBar"></detail-navi-bar>
-    <scroll class="scrollWrapper" ref="scroll">
+    <detail-navi-bar
+        class="NaviBar"
+        @NaviBarChange="NaviBarChange"
+    >
+    </detail-navi-bar>
+    <scroll class="scrollWrapper" ref="scroll" :probe-type="3">
       <detail-swiper :swiper-img="swiperImg"></detail-swiper>
       <basic-info :basic-info="basicInfo"></basic-info>
       <shop-info :shop-info="shopInfo"></shop-info>
       <goods-detail-info :goods-detail-info="goodsDetailInfo"></goods-detail-info>
+      <goods-params :is-loading="isLoading" @offsetTopOfParams="offsetTopOfParams"></goods-params>
+      <goods-comments :is-loading="isLoading" @offsetTopOfComments="offsetTopOfComments"></goods-comments>
+      <goods-recommends :is-loading="isLoading" @offsetTopOfRecommends="offsetTopOfRecommends"></goods-recommends>
     </scroll>
 
   </div>
@@ -20,7 +27,9 @@ import BasicInfo from "@/views/detail/ChildComp/BasicInfo";
 import Scroll from "@/components/common/scroll/Scroll";
 import ShopInfo from "@/views/detail/ChildComp/ShopInfo";
 import GoodsDetailInfo from "@/views/detail/ChildComp/GoodsDetailInfo";
-
+import GoodsParams from "@/views/detail/ChildComp/GoodsParams";
+import GoodsComments from "@/views/detail/ChildComp/GoodsComments";
+import GoodsRecommends from "@/views/detail/ChildComp/GoodsRecommends";
 import {shopInfo} from "@/views/detail/js/detail";
 import {debounce} from "@/common/utils";
 
@@ -33,6 +42,9 @@ export default {
     Scroll,
     ShopInfo,
     GoodsDetailInfo,
+    GoodsParams,
+    GoodsComments,
+    GoodsRecommends,
 
   },
 
@@ -48,7 +60,10 @@ export default {
         service: [],
       },
       shopInfo: {},
-      goodsDetailInfo:{}
+      goodsDetailInfo:{},
+      isLoading: true,
+      topOfDetailInfo: [0,0,0,0]
+
     }
   },
 
@@ -75,6 +90,9 @@ export default {
       //get goods detail info
       this.goodsDetailInfo = res.result.detailInfo;
 
+
+      //change isLoading
+      this.isLoading = false
     })
 
 
@@ -89,6 +107,7 @@ export default {
     this.$bus.$on("DetailSwiperDone",()=>{
       debounce(refresh,500);
     })
+
   },
 
   deactivated() {
@@ -98,8 +117,29 @@ export default {
 
 
   methods: {
+    // NaviBar切换
+    NaviBarChange(index){
+      this.$refs.scroll.scroll.scrollTo(0, -this.topOfDetailInfo[index], 500)
+    },
 
 
+    // 获取参数距离顶部的高度
+    offsetTopOfParams(top){
+      this.topOfDetailInfo[1] = top-44;
+    },
+
+
+    // 获取评论距离顶部高度
+    offsetTopOfComments(top){
+      this.topOfDetailInfo[2] = top-44;
+    },
+
+
+    // 获取推荐距离顶部高度
+    offsetTopOfRecommends(top){
+      this.topOfDetailInfo[3] = top-44;
+
+    }
   }
 }
 </script>

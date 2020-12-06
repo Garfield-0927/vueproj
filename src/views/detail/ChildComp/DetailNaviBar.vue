@@ -42,6 +42,7 @@ export default {
 
     titleChange(index){
       this.currentIndex = index
+      this.$emit("NaviBarChange", index)
     }
   }
 
