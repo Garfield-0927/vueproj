@@ -101,7 +101,6 @@ export default {
   align-items: center;
   margin-top: 18px;
   padding-bottom: 18px;
-  border-bottom: 2px solid lightgrey;
 }
 .postSellItem{
   height: 20px;
