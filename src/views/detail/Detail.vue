@@ -3,9 +3,10 @@
     <detail-navi-bar
         class="NaviBar"
         @NaviBarChange="NaviBarChange"
+        :index-change="currentIndex"
     >
     </detail-navi-bar>
-    <scroll class="scrollWrapper" ref="scroll" :probe-type="3">
+    <scroll class="scrollWrapper" ref="scroll" :probe-type="3" @positionchange="Detailpositionchange">
       <detail-swiper :swiper-img="swiperImg"></detail-swiper>
       <basic-info :basic-info="basicInfo"></basic-info>
       <shop-info :shop-info="shopInfo"></shop-info>
@@ -61,10 +62,10 @@ export default {
         service: [],
       },
       shopInfo: {},
-      goodsDetailInfo:{},
+      goodsDetailInfo: {},
       isLoading: true,
-      topOfDetailInfo: [0,0,0,0]
-
+      topOfDetailInfo: [0, 0, 0, 0],
+      currentIndex: 0
     }
   },
 
@@ -85,8 +86,8 @@ export default {
 
       // get shop info
       this.shopInfo = new shopInfo(res.result.shopInfo.name, res.result.shopInfo.shopLogo,
-                                   res.result.shopInfo.shopUrl, res.result.shopInfo.cFans,
-                                   res.result.shopInfo.cSells, res.result.shopInfo.score);
+          res.result.shopInfo.shopUrl, res.result.shopInfo.cFans,
+          res.result.shopInfo.cSells, res.result.shopInfo.score);
 
       //get goods detail info
       this.goodsDetailInfo = res.result.detailInfo;
@@ -100,23 +101,29 @@ export default {
   },
 
   mounted() {
-    let refresh = debounce(this.$refs.scroll.refresh, 500);
-    this.$bus.$on("DetailSwiperDone",()=>{
+    let refresh = debounce(() => {
+      if (this.$refs.scroll) {
+        this.$refs.scroll.refresh()
+      }
+    }, 500);
+
+
+    this.$bus.$on("DetailSwiperDone", () => {
       refresh()
     })
 
-
-    let newRefresh = debounce(()=>{
-      if (this.$refs.params && this.$refs.comments && this.$refs.recommends){
+    let newRefresh = debounce(() => {
+      if (this.$refs.params && this.$refs.comments && this.$refs.recommends) {
         this.topOfDetailInfo[1] = this.$refs.params.$el.offsetTop - 44;
         this.topOfDetailInfo[2] = this.$refs.comments.$el.offsetTop - 44;
         this.topOfDetailInfo[3] = this.$refs.recommends.$el.offsetTop - 44;
         this.$refs.scroll.refresh();
       }
-    },500)
-    this.$bus.$on("detailImageLoad",()=>{
+    }, 500)
+    this.$bus.$on("detailImageLoad", () => {
       newRefresh()
     })
+
 
   },
 
@@ -128,45 +135,58 @@ export default {
 
   methods: {
     // NaviBar切换
-    NaviBarChange(index){
+    NaviBarChange(index) {
       this.$refs.scroll.scroll.scrollTo(0, -this.topOfDetailInfo[index], 500)
     },
 
-
-    // // 获取参数距离顶部的高度
-    // offsetTopOfParams(top){
-    //   this.topOfDetailInfo[1] = top-44;
-    // },
-    //
-    //
-    // // 获取评论距离顶部高度
-    // offsetTopOfComments(top){
-    //   this.topOfDetailInfo[2] = top-44;
-    // },
-    //
-    //
-    // // 获取推荐距离顶部高度
-    // offsetTopOfRecommends(top){
-    //   this.topOfDetailInfo[3] = top-44;
-    //
-    // }
+    // 获取滚动位置
+    Detailpositionchange(position) {
+      if(-position.y<this.topOfDetailInfo[1]-44){
+        this.currentIndex = 0;
+      }else if (-position.y<this.topOfDetailInfo[2]-44){
+        this.currentIndex = 1;
+      }else if (-position.y<this.topOfDetailInfo[3]-44){
+        this.currentIndex = 2;
+      }else{
+        this.currentIndex = 3;
+      }
+    }
+// // 获取参数距离顶部的高度
+// offsetTopOfParams(top){
+//   this.topOfDetailInfo[1] = top-44;
+// },
+//
+//
+// // 获取评论距离顶部高度
+// offsetTopOfComments(top){
+//   this.topOfDetailInfo[2] = top-44;
+// },
+//
+//
+// // 获取推荐距离顶部高度
+// offsetTopOfRecommends(top){
+//   this.topOfDetailInfo[3] = top-44;
+//
+// }
   }
 }
 </script>
 
 <style scoped>
-.detail{
+.detail {
   height: 100vh;
   position: relative;
   z-index: 1;
   background-color: #fff;
 }
-.NaviBar{
+
+.NaviBar {
   position: relative;
   top: 0;
   z-index: 2;
 }
-.scrollWrapper{
+
+.scrollWrapper {
   height: calc(100% - 44px);
 
 }

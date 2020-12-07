@@ -7,8 +7,8 @@
              v-for="(item, index) in titles"
              :key="index"
              :class="{titleactive: index === currentIndex}"
-              @click="titleChange(index)">
-          {{item}}
+             @click="titleChange(index)">
+          {{ item }}
         </div>
       </div>
     </navi-bar>
@@ -23,24 +23,35 @@ import NaviBar from "@/components/common/navibar/NaviBar";
 
 export default {
   name: "DetailNaviBar",
-  components:{
+  components: {
     NaviBar
 
   },
 
-  data(){
-    return{
-      titles:['商品', '详情', '评论', '推荐', ],
+  data() {
+    return {
+      titles: ['商品', '详情', '评论', '推荐',],
       currentIndex: 0,
     }
   },
 
-  methods:{
-    goBack(){
+  props: {
+    indexChange: Number
+  },
+
+  watch:{
+    // eslint-disable-next-line no-unused-vars
+    indexChange(newV, oldV){
+      this.currentIndex = newV;
+    }
+  },
+
+  methods: {
+    goBack() {
       this.$router.back();
     },
 
-    titleChange(index){
+    titleChange(index) {
       this.currentIndex = index
       this.$emit("NaviBarChange", index)
     }
@@ -50,26 +61,27 @@ export default {
 </script>
 
 <style scoped>
-.navibar{
+.navibar {
   background-color: rgb(18, 150, 219);
   color: #ffffff;
 }
-.left{
+
+.left {
   font-size: larger;
 }
 
-.mid{
+.mid {
   display: flex;
   align-content: center;
   justify-content: center;
 
 }
 
-.titleItem{
+.titleItem {
   flex: 1;
 }
 
-.titleactive{
+.titleactive {
   color: lightpink;
 }
 </style>
