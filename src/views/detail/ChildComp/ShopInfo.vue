@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="IntoShop" @click="goToShop">
-      <button>进店逛逛</button>
+      <div>进店逛逛</div>
     </div>
   </div>
 </template>
@@ -139,12 +139,18 @@ export default {
 .IntoShop{
   margin-top: 10px;
   position: relative;
-  text-align: center;
+  left: 50%;
+  width: 150px;
+
+  transform: translateX(-50%);
 }
-.IntoShop button{
+.IntoShop div{
   border: none;
   border-radius: 5px;
-  width: 150px;
   height: 30px;
+  line-height: 30px;
+  text-align: center;
+  background-color: #e3e3e3;
+
 }
 </style>

@@ -15,7 +15,7 @@
       <goods-comments ref="comments" :is-loading="isLoading"></goods-comments>
       <goods-recommends ref="recommends" :is-loading="isLoading"></goods-recommends>
     </scroll>
-
+  <detail-bottom-bar class="bottomBar"></detail-bottom-bar>
   </div>
 
 </template>
@@ -31,8 +31,8 @@ import GoodsDetailInfo from "@/views/detail/ChildComp/GoodsDetailInfo";
 import GoodsParams from "@/views/detail/ChildComp/GoodsParams";
 import GoodsComments from "@/views/detail/ChildComp/GoodsComments";
 import GoodsRecommends from "@/views/detail/ChildComp/GoodsRecommends";
+import DetailBottomBar from "@/views/detail/ChildComp/DetailBottomBar";
 import {shopInfo} from "@/views/detail/js/detail";
-// eslint-disable-next-line no-unused-vars
 import {debounce} from "@/common/utils";
 
 export default {
@@ -47,7 +47,7 @@ export default {
     GoodsParams,
     GoodsComments,
     GoodsRecommends,
-
+    DetailBottomBar,
   },
 
   data() {
@@ -187,7 +187,7 @@ export default {
 }
 
 .scrollWrapper {
-  height: calc(100% - 44px);
+  height: calc(100% - 44px - 49px);
 
 }
 </style>
