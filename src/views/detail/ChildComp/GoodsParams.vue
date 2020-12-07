@@ -22,16 +22,6 @@ export default
   mounted() {
   },
 
-  watch: {
-    // eslint-disable-next-line no-unused-vars
-    isLoading(newVal, oldVal){
-      if(!newVal) {
-        this.$nextTick(() => { //使用nextTick为了保证dom元素都已经渲染完毕
-          this.$emit("offsetTopOfParams", this.$refs.goodsParams.offsetTop)
-        });
-      }
-    }
-  },
 
 
 }

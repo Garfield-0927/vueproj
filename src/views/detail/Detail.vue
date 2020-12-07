@@ -10,9 +10,9 @@
       <basic-info :basic-info="basicInfo"></basic-info>
       <shop-info :shop-info="shopInfo"></shop-info>
       <goods-detail-info :goods-detail-info="goodsDetailInfo"></goods-detail-info>
-      <goods-params :is-loading="isLoading" @offsetTopOfParams="offsetTopOfParams"></goods-params>
-      <goods-comments :is-loading="isLoading" @offsetTopOfComments="offsetTopOfComments"></goods-comments>
-      <goods-recommends :is-loading="isLoading" @offsetTopOfRecommends="offsetTopOfRecommends"></goods-recommends>
+      <goods-params ref="params" :is-loading="isLoading"></goods-params>
+      <goods-comments ref="comments" :is-loading="isLoading"></goods-comments>
+      <goods-recommends ref="recommends" :is-loading="isLoading"></goods-recommends>
     </scroll>
 
   </div>
@@ -31,6 +31,7 @@ import GoodsParams from "@/views/detail/ChildComp/GoodsParams";
 import GoodsComments from "@/views/detail/ChildComp/GoodsComments";
 import GoodsRecommends from "@/views/detail/ChildComp/GoodsRecommends";
 import {shopInfo} from "@/views/detail/js/detail";
+// eslint-disable-next-line no-unused-vars
 import {debounce} from "@/common/utils";
 
 export default {
@@ -99,13 +100,20 @@ export default {
   },
 
   mounted() {
+    const refresh = debounce(this.$refs.scroll.refresh, 500);
     this.$bus.$on("DetailSwiperDone",()=>{
-      this.$refs.scroll.refresh();
+      refresh()
     })
 
-    const refresh = this.$refs.scroll.refresh;
-    this.$bus.$on("DetailSwiperDone",()=>{
-      debounce(refresh,500);
+
+    const newrefresh = debounce(()=>{
+      this.topOfDetailInfo[1] = this.$refs.params.$el.offsetTop - 44;
+      this.topOfDetailInfo[2] = this.$refs.comments.$el.offsetTop - 44;
+      this.topOfDetailInfo[3] = this.$refs.recommends.$el.offsetTop - 44;
+      this.$refs.scroll.refresh();
+    },500)
+    this.$bus.$on("detailImageLoad",()=>{
+      newrefresh()
     })
 
   },
@@ -123,23 +131,23 @@ export default {
     },
 
 
-    // 获取参数距离顶部的高度
-    offsetTopOfParams(top){
-      this.topOfDetailInfo[1] = top-44;
-    },
-
-
-    // 获取评论距离顶部高度
-    offsetTopOfComments(top){
-      this.topOfDetailInfo[2] = top-44;
-    },
-
-
-    // 获取推荐距离顶部高度
-    offsetTopOfRecommends(top){
-      this.topOfDetailInfo[3] = top-44;
-
-    }
+    // // 获取参数距离顶部的高度
+    // offsetTopOfParams(top){
+    //   this.topOfDetailInfo[1] = top-44;
+    // },
+    //
+    //
+    // // 获取评论距离顶部高度
+    // offsetTopOfComments(top){
+    //   this.topOfDetailInfo[2] = top-44;
+    // },
+    //
+    //
+    // // 获取推荐距离顶部高度
+    // offsetTopOfRecommends(top){
+    //   this.topOfDetailInfo[3] = top-44;
+    //
+    // }
   }
 }
 </script>
