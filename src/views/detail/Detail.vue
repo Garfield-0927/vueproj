@@ -100,28 +100,30 @@ export default {
   },
 
   mounted() {
-    const refresh = debounce(this.$refs.scroll.refresh, 500);
+    let refresh = debounce(this.$refs.scroll.refresh, 500);
     this.$bus.$on("DetailSwiperDone",()=>{
       refresh()
     })
 
 
-    const newrefresh = debounce(()=>{
-      this.topOfDetailInfo[1] = this.$refs.params.$el.offsetTop - 44;
-      this.topOfDetailInfo[2] = this.$refs.comments.$el.offsetTop - 44;
-      this.topOfDetailInfo[3] = this.$refs.recommends.$el.offsetTop - 44;
-      this.$refs.scroll.refresh();
+    let newRefresh = debounce(()=>{
+      if (this.$refs.params && this.$refs.comments && this.$refs.recommends){
+        this.topOfDetailInfo[1] = this.$refs.params.$el.offsetTop - 44;
+        this.topOfDetailInfo[2] = this.$refs.comments.$el.offsetTop - 44;
+        this.topOfDetailInfo[3] = this.$refs.recommends.$el.offsetTop - 44;
+        this.$refs.scroll.refresh();
+      }
     },500)
     this.$bus.$on("detailImageLoad",()=>{
-      newrefresh()
+      newRefresh()
     })
 
   },
 
-  deactivated() {
-    // 离开时销毁组件 否则会keep-alive
-    this.$destroy('Detail');
-  },
+  // deactivated() {
+  //   // 离开时销毁组件 否则会keep-alive
+  //   this.$destroy('Detail');
+  // },
 
 
   methods: {
