@@ -188,6 +188,6 @@ export default {
 
 .scrollWrapper {
   height: calc(100% - 44px - 49px);
-
+  overflow: hidden;
 }
 </style>

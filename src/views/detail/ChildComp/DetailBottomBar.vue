@@ -3,8 +3,8 @@
     <div class="bottombarItem service" @click="callService">客服</div>
     <div class="bottombarItem shop " @click="goToShop">商铺</div>
     <div class="bottombarItem favor" @click="Clickfavor">收藏</div>
-    <div class="bottombarItem addToCart">加入购物车</div>
-    <div class="bottombarItem purchase">购买</div>
+    <div class="bottombarItem addToCart" @click="ClickAddCart">加入购物车</div>
+    <div class="bottombarItem purchase" @click="ClickPurchase">购买</div>
   </div>
 </template>
 
@@ -22,7 +22,16 @@ export default {
 
     Clickfavor(){
       alert("你都愿意收藏商品，为什么不愿意收藏我呢？")
+    },
+
+    ClickAddCart(){
+      alert("把zjh宝宝成功加入购物车啦！！")
+    },
+
+    ClickPurchase(){
+      alert("点什么点，反正你又不买！")
     }
+
   }
 }
 </script>
